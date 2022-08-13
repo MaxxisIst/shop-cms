@@ -10,3 +10,11 @@ export const toBase64 = (file) => {
         reader.readAsDataURL(file);
     });
 };
+
+export const currencyFormatUAH = (number) => {
+    return new Intl.NumberFormat('ua-UA', {
+        style: 'currency',
+        currency: 'UAH',
+        // maximumFractionDigits: 0
+    }).format(number);
+};
