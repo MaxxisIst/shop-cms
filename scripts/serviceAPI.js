@@ -9,6 +9,21 @@ export const getGoods = async () => {
     throw new Error (response.status);
 };
 
+export const postGoods = async (data) => {
+    // return fetch(`${API_URI}goods/?nopage=true`).then(response => response.json());
+    const response = await fetch(`${API_URI}goods`, {
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    if (response.ok) {
+        return await response.json();
+    }
+    throw new Error (response.status);
+};
+
 export const getCategory = async () => {
     // return fetch(`${API_URI}category`).then(response => response.json());
     const response = await fetch(`${API_URI}category`);

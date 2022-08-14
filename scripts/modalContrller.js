@@ -1,22 +1,42 @@
-import {form} from './elems.js';
+// import { form, modalTitle } from './elems.js';
+import { form, modal, modalSubmitBtn, modalTitle } from './elems.js';
 import { hidePreview } from './previewController.js';
-
-const openModal = (modal, classOpen) => {
-    modal.classList.add(classOpen);
+// (modal, classOpen)
+const openModal = () => {
+    modal.classList.add('d-block');
 };
-const closeModal = (modal, classOpen) => {
-    modal.classList.remove(classOpen);
+// (modal, classOpen)
+export const closeModal = () => {
+    modal.classList.remove('d-block');
     form.reset();
     hidePreview();
 };
-
-export const modalController = ({modal, btn, classOpen, classClose}) => {
-    btn.addEventListener('click', () => {
-        openModal(modal, classOpen);
-    });
+// ({ modal, btn, classOpen, classClose, delegation })
+export const modalController = ({ btn, delegation }) => {
+    if (btn) {
+        btn.addEventListener('click', () => {
+            modalTitle.textContent = 'Добавить новый товар';
+            modalSubmitBtn.textContent = 'Добавить товар';
+            // openModal(modal, classOpen);
+            openModal();
+        });
+    }
+    if (delegation) {
+        delegation.parent.addEventListener('click', ({target}) => {
+            const goodsRow = target.closest(delegation.target);
+            const targetExclude = target.closest(delegation.targetExclude);
+            if (goodsRow && !targetExclude) {
+                modalTitle.textContent = `Изменить товар #${goodsRow.dataset.id}`;
+                modalSubmitBtn.textContent = 'Изменить товар';
+                // openModal(modal, classOpen, goodsRow.dataset.id);
+                openModal(goodsRow.dataset.id);
+            }
+        });
+    }
     modal.addEventListener('click', ({target}) => {
-        if (target === modal || target.classList.contains(classClose)) {
-            closeModal(modal, classOpen);
+        if (target === modal || target.classList.contains('btn-close')) {
+            // closeModal(modal, classOpen);
+            closeModal();
         }
     });
 };
