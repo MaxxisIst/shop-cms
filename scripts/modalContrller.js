@@ -1,8 +1,12 @@
 // import { form, modalTitle } from './elems.js';
 import { form, modal, modalSubmitBtn, modalTitle } from './elems.js';
+import { fillingForm } from './formController.js';
 import { hidePreview } from './previewController.js';
 // (modal, classOpen)
-const openModal = () => {
+const openModal = (id) => {
+    if (id) {
+        fillingForm(id);
+    }
     modal.classList.add('d-block');
 };
 // (modal, classOpen)
