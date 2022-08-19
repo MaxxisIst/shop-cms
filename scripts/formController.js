@@ -2,9 +2,9 @@ import { API_URI } from './const.js';
 import { category, form, modal } from './elems.js';
 import { closeModal } from './modalContrller.js';
 import { showPreview } from './previewController.js';
-import { getCategory, getGoods, postGoods } from './serviceAPI.js';
-import { renderRow } from './tableView.js';
-import { toBase64 } from './utils.js';
+import { editGoods, getCategory, getGoods, postGoods } from './serviceAPI.js';
+import { editRow, renderRow } from './tableView.js';
+import { toBase64, currencyFormatUAH } from './utils.js';
 
 const updateCategory = async () => {
     category.textContent = '';
@@ -34,9 +34,15 @@ export const formController = () => {
         } else {
             delete data.image;
         }
-        const goods = await postGoods(data);
-        renderRow(goods);
+        if (data.imagesave) {
+            const goods = await editGoods(data);
+            editRow(goods);
+        } else {
+            const goods = await postGoods(data);
+            renderRow(goods);
+        }
         closeModal(modal, 'd-block');
+        updateCategory();
     });
 };
 
@@ -46,7 +52,8 @@ form.title.value = title;
 form.category.value = category;
 form.description.value = description.join('\n');
 form.display.value = display;
-form.price.value = price;
+form.price.value = `${currencyFormatUAH(price)}`;
 form.imagesave.value = image;
+form.identificator.value = id;
 showPreview(`${API_URI}${image}`);
 };
